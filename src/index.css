@@ -97,3 +97,144 @@ a:focus, button:focus {
   outline: 2px solid rgba(167,139,250,0.18);
   outline-offset: 3px;
 }
+
+/* Command palette and terminal styles */
+.terminal-header {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Segoe UI Mono', monospace;
+  background: linear-gradient(90deg, rgba(124,58,237,0.08), rgba(6,182,212,0.04));
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  padding: 6px 12px;
+  border-radius: 10px 10px 0 0;
+}
+
+.command-palette { max-width: 800px; margin: 0 auto; }
+
+/* helper to avoid animating heavy backdrop-filter on modals */
+.no-blur {
+  /* enable stronger blur for the command palette while avoiding costly animations
+     we apply a fixed blur value and only transition opacity/transform to reduce jank */
+  backdrop-filter: blur(12px) saturate(1.05);
+  -webkit-backdrop-filter: blur(12px) saturate(1.05);
+  background: linear-gradient(180deg, rgba(8,10,12,0.72), rgba(8,10,12,0.64));
+  border: 1px solid rgba(255,255,255,0.04);
+  will-change: opacity, transform;
+}
+.no-blur::after { mix-blend-mode: overlay; }
+
+/* subtle pulse spot for skills */
+.pulse-spot { box-shadow: 0 0 0 4px rgba(124,58,237,0.06) inset; transition: box-shadow 420ms ease; }
+
+/* scroll progress indicator */
+.scroll-progress { position: fixed; right: 16px; top: 16px; width: 6px; height: calc(100% - 32px); background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border-radius: 6px; overflow: hidden; }
+.scroll-progress > i { display: block; width: 100%; background: linear-gradient(180deg, var(--accent-from), var(--accent-to)); height: 8%; transform-origin: top; transition: height 160ms linear; }
+
+/* floating blur/particles */
+.float-blur { position: absolute; inset: auto auto 10% 2%; width: 220px; height: 220px; background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 40%); filter: blur(24px); pointer-events: none; }
+
+/* improved card depth */
+.glass { box-shadow: 0 8px 30px rgba(2,6,23,0.6), 0 1px 0 rgba(255,255,255,0.02) }
+
+/* stronger visual separation for tilt/project cards so they don't blend into background */
+.tilt-card { position: relative; perspective: 1000px; }
+.tilt-card > .glass,
+.tilt-card .glass {
+  /* darker, higher-opacity surface to separate from page background and increase legibility */
+  background: linear-gradient(180deg, rgba(6,8,10,0.80), rgba(10,12,14,0.62));
+  border: 1px solid rgba(139,92,246,0.06); /* subtle purple tint */
+  box-shadow: 0 28px 80px rgba(2,6,23,0.82), 0 6px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.03);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* top edge highlight to create a premium card header separation */
+.tilt-card .card-top-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(139,92,246,0.9), rgba(6,182,212,0.7));
+  opacity: 0.12;
+  pointer-events: none;
+  transition: opacity 280ms ease, transform 280ms ease;
+  transform: translateY(-2px);
+}
+
+/* make highlight stronger on hover */
+.tilt-card:hover .card-top-highlight { opacity: 0.24; transform: translateY(0); }
+
+/* smoother GPU-friendly transform hints */
+.tilt-card .tilt-inner { will-change: transform; }
+
+/* increase button contrast when placed inside a card */
+.tilt-card .btn-primary {
+  box-shadow: 0 12px 38px rgba(124,58,237,0.26), inset 0 -3px 12px rgba(0,0,0,0.22);
+  background: linear-gradient(90deg, #9b5cf9, #7c3aed 60%);
+}
+
+/* subtle chromatic rim to separate card edges */
+.tilt-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(139,92,246,0.06), rgba(6,182,212,0.03));
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  filter: blur(8px);
+}
+
+.tilt-card .tilt-inner { position: relative; z-index: 1; transform-style: preserve-3d; transition: transform 180ms ease, box-shadow 180ms ease; }
+.tilt-card .tilt-reflection { opacity: 0.04; pointer-events: none; }
+
+@media (max-width: 640px) {
+  .scroll-progress { right: 8px; top: 8px; height: calc(100% - 16px); }
+}
+
+/* Prompt engineering timeline visuals */
+/* Prompt engineering timeline visuals removed */
+
+/* Cyber grid */
+.cyber-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px;
+  opacity: 0.04;
+  z-index: 0;
+  transform: translate3d(0,0,0);
+  animation: gridMove 30s linear infinite;
+}
+@keyframes gridMove { from { background-position: 0 0, 0 0 } to { background-position: -120px -60px, 120px 60px } }
+
+/* Floating gradient orbs */
+.orb { position: absolute; border-radius: 999px; filter: blur(36px); opacity: 0.7; mix-blend-mode: screen; }
+.orb.orb-1 { width: 260px; height: 260px; background: radial-gradient(circle, rgba(124,58,237,0.12), transparent 40%); left: 6%; top: 8%; animation: float1 18s ease-in-out infinite; }
+.orb.orb-2 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(6,182,212,0.10), transparent 40%); right: 6%; bottom: 18%; animation: float2 22s ease-in-out infinite; }
+@keyframes float1 { 0% { transform: translateY(0) } 50% { transform: translateY(-14px) } 100% { transform: translateY(0) } }
+@keyframes float2 { 0% { transform: translateY(0) } 50% { transform: translateY(18px) } 100% { transform: translateY(0) } }
+
+/* Glass enhancement */
+.glass { border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 12px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
+.glass::after { content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%); mix-blend-mode: overlay; }
+
+/* Mouse reactive hover shadow for tilt cards */
+.tilt-card:hover .tilt-inner { box-shadow: 0 24px 60px rgba(124,58,237,0.12); }
+
+/* Interactive stats counters */
+/* counter styles removed with Stats component */
+
+
+/* Highlight on hover for timeline cards */
+.glass:hover { box-shadow: 0 20px 60px rgba(124,58,237,0.12), 0 4px 14px rgba(2,6,23,0.6); transform: translateY(-6px); }
+
+/* PromptEngineering styles removed */
+
+/* Recruiter panel */
+.recruiter-panel-wrapper { position: fixed; top: 0; right: 0; z-index: 60; pointer-events: none; }
+.recruiter-panel { width: 18rem; max-width: calc(100vw - 24px); margin: 1.5rem; pointer-events: auto; opacity: 0; transform: translateY(-8px) scale(.98); transition: opacity 220ms ease, transform 220ms cubic-bezier(.2,.9,.2,1); }
+[data-recruiter] .recruiter-panel { opacity: 1; transform: translateY(0) scale(1); }
+.recruiter-panel .text-slate-200 { color: #e6eefb; }
+.recruiter-panel ul { margin-left: 0.65rem; }
+

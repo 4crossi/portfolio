@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { FiExternalLink } from "react-icons/fi";
+import { useRef } from "react";
 
 const projects = [
   {
@@ -30,31 +31,68 @@ export default function Projects() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          {projects.map((project) => (
-            <motion.article
-              key={project.title}
-              whileHover={{ y: -4, scale: 1.01 }}
-              transition={{ duration: 0.25 }}
-              className="glass rounded-3xl p-6 md:p-7"
-            >
-              <h3 className="text-2xl font-bold">{project.title}</h3>
-              <p className="mt-2 text-violet-400">{project.status}</p>
-              <p className="mt-3 leading-7 text-slate-400">{project.description}</p>
+          {projects.map((project) => {
+            const ref = useRef();
+            return (
+              <div key={project.title} className="tilt-card relative">
+                <motion.article
+                  ref={ref}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.48, ease: [0.2, 0.8, 0.2, 1] }}
+                  onMouseMove={(e) => {
+                    const el = ref.current;
+                    if (!el) return;
+                    const inner = el.querySelector('.tilt-inner');
+                    if (!inner) return;
+                    const rect = el.getBoundingClientRect();
+                    const px = (e.clientX - rect.left) / rect.width;
+                    const py = (e.clientY - rect.top) / rect.height;
+                    const rx = (py - 0.5) * 8;
+                    const ry = (px - 0.5) * -12;
+                    // batch via rAF and store id on element to avoid flooding
+                    if (el._tiltRaf) cancelAnimationFrame(el._tiltRaf);
+                    el._tiltRaf = requestAnimationFrame(() => {
+                      inner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(8px)`;
+                      el._tiltRaf = null;
+                    });
+                  }}
+                  onMouseLeave={() => {
+                    const el = ref.current;
+                    if (!el) return;
+                    const inner = el.querySelector('.tilt-inner');
+                    if (!inner) return;
+                    if (el._tiltRaf) cancelAnimationFrame(el._tiltRaf);
+                    inner.style.transform = '';
+                  }}
+                  whileHover={{ y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="glass rounded-3xl p-6 md:p-7 relative overflow-hidden"
+                >
+                  <div className="tilt-inner relative will-change-transform">
+                    <div className="card-top-highlight" aria-hidden="true" />
+                    <div className="tilt-reflection" />
+                    <h3 className="text-2xl font-bold">{project.title}</h3>
+                    <p className="mt-2 text-violet-400">{project.status}</p>
+                    <p className="mt-3 leading-7 text-slate-400">{project.description}</p>
 
-              {project.href ? (
-                <div className="mt-6">
-                  <a
-                    href={project.href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="btn-primary inline-flex items-center gap-2"
-                  >
-                    View Project <FiExternalLink />
-                  </a>
-                </div>
-              ) : null}
-            </motion.article>
-          ))}
+                    {project.href ? (
+                      <div className="mt-6">
+                        <a
+                          href={project.href}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="btn-primary inline-flex items-center gap-2"
+                        >
+                          View Project <FiExternalLink />
+                        </a>
+                      </div>
+                    ) : null}
+                  </div>
+                </motion.article>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

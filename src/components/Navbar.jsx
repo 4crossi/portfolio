@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FiGithub, FiMail, FiMenu, FiX } from "react-icons/fi";
+import { FiGithub, FiMail, FiMenu, FiX, FiSearch } from "react-icons/fi";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -36,6 +36,12 @@ export default function Navbar() {
           <a aria-label="Email" href="mailto:dy6924225@gmail.com" className="rounded-full border border-white/10 p-2 text-slate-300 transition hover:border-white/20 hover:text-white">
             <FiMail />
           </a>
+          <button aria-label="Command Palette" onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))} className="rounded-full border border-white/10 p-2 text-slate-300 transition hover:border-white/20 hover:text-white">
+            <FiSearch />
+          </button>
+          <button aria-label="Recruiter Mode" onClick={() => window.dispatchEvent(new CustomEvent('recruiter-toggle'))} className="ml-2 rounded-full border border-white/10 px-3 py-2 text-sm text-slate-200 transition hover:border-white/20 hover:text-white">
+            Recruiter Mode
+          </button>
         </div>
 
         <button

@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 const skills = [
   "Cybersecurity",
   "Linux",
@@ -23,10 +25,21 @@ export default function Skills() {
         <h2 className="mt-3 text-4xl font-bold md:text-5xl">Core skills</h2>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          {skills.map((skill) => (
-            <span key={skill} className="glass rounded-full px-4 py-2.5 text-sm text-slate-200">
-              {skill}
-            </span>
+          {skills.map((skill, i) => (
+            <motion.button
+              key={skill}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.98 }}
+              className="glass rounded-full px-4 py-2.5 text-sm text-slate-200 flex items-center gap-3"
+              onClick={() => {
+                const el = document.getElementById('skills');
+                el?.classList.add('pulse-spot');
+                setTimeout(() => el?.classList.remove('pulse-spot'), 600);
+              }}
+            >
+              <span className="w-2 h-2 rounded-full bg-violet-400/80 inline-block" />
+              <span>{skill}</span>
+            </motion.button>
           ))}
         </div>
       </div>
