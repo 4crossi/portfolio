@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FiExternalLink } from "react-icons/fi";
 
 const projects = [
   {
@@ -36,19 +37,22 @@ export default function Projects() {
               transition={{ duration: 0.25 }}
               className="glass rounded-3xl p-6 md:p-7"
             >
+              <h3 className="text-2xl font-bold">{project.title}</h3>
+              <p className="mt-2 text-violet-400">{project.status}</p>
+              <p className="mt-3 leading-7 text-slate-400">{project.description}</p>
+
               {project.href ? (
-                <a href={project.href} target="_blank" rel="noreferrer" className="block">
-                  <h3 className="text-2xl font-bold">{project.title}</h3>
-                  <p className="mt-2 text-violet-400">{project.status}</p>
-                  <p className="mt-3 leading-7 text-slate-400">{project.description}</p>
-                </a>
-              ) : (
-                <>
-                  <h3 className="text-2xl font-bold">{project.title}</h3>
-                  <p className="mt-2 text-violet-400">{project.status}</p>
-                  <p className="mt-3 leading-7 text-slate-400">{project.description}</p>
-                </>
-              )}
+                <div className="mt-6">
+                  <a
+                    href={project.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="btn-primary inline-flex items-center gap-2"
+                  >
+                    View Project <FiExternalLink />
+                  </a>
+                </div>
+              ) : null}
             </motion.article>
           ))}
         </div>

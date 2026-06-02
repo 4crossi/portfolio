@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FiArrowRight, FiFolder } from "react-icons/fi";
 
 export default function Hero() {
   return (
@@ -14,8 +15,13 @@ export default function Hero() {
             Aspiring Cybersecurity Professional
           </p>
           <h1 className="text-5xl font-bold leading-tight md:text-7xl">
-            Deepanshu Yadav
+            Deepanshu
           </h1>
+
+          <div className="mt-3 h-1 w-36 overflow-hidden rounded-full">
+            <div className="h-1 w-full animate-[slidebg_6s_linear_infinite] bg-gradient-to-r from-violet-500 via-rose-400 to-cyan-400" />
+          </div>
+
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-400 md:text-xl">
             Aspiring cybersecurity professional focused on cyber threat analysis,
             security operations, web security, and hands-on learning through
@@ -30,13 +36,14 @@ export default function Hero() {
           </div>
 
           <div className="mt-10 flex flex-wrap gap-4">
-            <a href="#experience" className="rounded-xl bg-violet-600 px-6 py-3 font-medium text-white transition hover:bg-violet-500">
+            <a href="#experience" className="btn-primary inline-flex items-center gap-3">
               View Experience
             </a>
-            <a href="#projects" className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 font-medium text-white transition hover:bg-white/10">
+            <a href="#projects" className="btn-secondary inline-flex items-center gap-3">
               View Projects
             </a>
           </div>
+
         </motion.div>
       </div>
     </section>

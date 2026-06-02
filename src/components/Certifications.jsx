@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
+import { FiExternalLink } from "react-icons/fi";
 
 const certifications = [
   {
     title: "Fundamentals Of Cybersecurity",
     issuer: "Zscaler, Virtual",
     period: "Mar 2026 - Apr 2026",
+    url: "https://verify.skilljar.com/c/v7oygi8ppk2q",
   },
   {
     title: "Getting Started With Cisco Packet Tracer",
@@ -15,6 +17,13 @@ const certifications = [
     title: "EY Techathon 6.0 Semi-Finalist",
     issuer: "EY",
     period: "Achievement",
+    url: "https://unstop.com/certificate-preview/8c1efabd-acef-4315-a6e5-a28d0286537a?utm_campaign",
+  },
+  {
+    title: "Deloitte Australia - Cyber Job Simulation",
+    issuer: "Forage",
+    period: "Completion",
+    url: "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/9PBTqmSxAf6zZTseP/E9pA6qsdbeyEkp3ti_9PBTqmSxAf6zZTseP_tXtH8fZKbQjWZyZhF_1749711339077_completion_certificate.pdf",
   },
 ];
 
@@ -38,6 +47,18 @@ export default function Certifications() {
               <p className="text-sm text-violet-400">{certification.period}</p>
               <h3 className="mt-3 text-xl font-semibold leading-8">{certification.title}</h3>
               <p className="mt-4 text-slate-400">{certification.issuer}</p>
+              {certification.url ? (
+                <a
+                  href={certification.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary mt-6 inline-flex items-center gap-2"
+                >
+                  View Certificate <FiExternalLink />
+                </a>
+              ) : (
+                <p className="mt-4 text-slate-300">{certification.period}</p>
+              )}
             </motion.article>
           ))}
         </div>

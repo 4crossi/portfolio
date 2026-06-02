@@ -9,13 +9,13 @@ const education = [
   },
   {
     degree: "Senior Secondary (XII), CISCE Science",
-    org: "City Montessori Higher Secondary School, Manipur West",
+    org: "City Montessori Higher Secondary School, Lucknow",
     period: "2023",
     note: "85.60%",
   },
   {
     degree: "Secondary (X), CISCE",
-    org: "City Montessori Higher Secondary School, Manipur West",
+    org: "City Montessori Higher Secondary School, Lucknow",
     period: "2021",
     note: "90.00%",
   },
