@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FiArrowRight } from "react-icons/fi";
+import { SiHashnode } from "react-icons/si";
 
 const PUBLICATION_HOST = import.meta.env.VITE_HASHNODE_PUBLICATION_HOST?.trim();
 
@@ -127,7 +130,7 @@ export default function Blogs() {
           </div>
         )}
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3 auto-rows-fr">
           {loading && (
             <div className="glass rounded-3xl p-6 text-slate-300">Loading posts...</div>
           )}
@@ -138,29 +141,70 @@ export default function Blogs() {
             </div>
           )}
 
-          {posts.map((post) => (
-            <a
-              key={`${post.slug}-${post.title}`}
-              href={post.slug}
-              target="_blank"
-              rel="noreferrer"
-              className="glass group rounded-3xl p-6 transition hover:-translate-y-1 hover:border-white/15"
-            >
-              <p className="text-sm text-violet-400">
-                {post.tag || publication?.title || "Hashnode"}
-              </p>
-              <h3 className="mt-3 text-xl font-semibold leading-8 transition group-hover:text-violet-300">
-                {post.title}
-              </h3>
-              <p className="mt-4 line-clamp-3 text-slate-400">
-                {post.brief || "Read the full post on Hashnode."}
-              </p>
-              <div className="mt-6 flex items-center justify-between gap-4 text-sm text-slate-500">
-                <span>{formatDate(post.publishedAt)}</span>
-                <span>{post.readTimeInMinutes ? `${post.readTimeInMinutes} min read` : "Hashnode"}</span>
-              </div>
-            </a>
-          ))}
+          {posts.map((post) => {
+            const tags = Array.isArray(post.tags) ? post.tags.filter(Boolean) : [];
+
+            return (
+              <motion.a
+                key={`${post.slug}-${post.title}`}
+                href={post.slug}
+                target="_blank"
+                rel="noreferrer"
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+                whileHover={{ y: -6 }}
+                className="group glass relative flex h-full flex-col overflow-hidden rounded-3xl p-6"
+              >
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 bg-[radial-gradient(120%_120%_at_0%_0%,rgba(139,92,246,0.16),transparent_55%),radial-gradient(120%_120%_at_100%_100%,rgba(34,211,238,0.14),transparent_55%)]"
+                />
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 ring-1 ring-inset ring-violet-400/30 transition-opacity duration-300 ease-out group-hover:opacity-100"
+                />
+
+                <div className="relative flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/20 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-300">
+                    <SiHashnode className="h-3.5 w-3.5" aria-hidden="true" />
+                    Hashnode
+                  </span>
+                </div>
+
+                <h3 className="relative mt-4 min-h-[4rem] line-clamp-2 text-xl font-semibold leading-8 text-white transition-colors duration-300 group-hover:text-violet-300">
+                  {post.title}
+                </h3>
+
+                {tags.length > 0 && (
+                  <div className="relative mt-3 flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-slate-400"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div className="relative mt-auto flex items-center justify-between gap-4 pt-6 text-sm text-slate-500">
+                  <span>{formatDate(post.publishedAt)}</span>
+                  {post.readTimeInMinutes ? <span>{post.readTimeInMinutes} min read</span> : null}
+                </div>
+
+                <div className="relative mt-4 flex items-center gap-1.5 text-sm font-medium text-violet-300">
+                  Read Article
+                  <FiArrowRight
+                    className="h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1.5"
+                    aria-hidden="true"
+                  />
+                </div>
+              </motion.a>
+            );
+          })}
         </div>
       </div>
     </section>
